@@ -4,6 +4,9 @@ using namespace std;
 //dinh nghia mot cau tru dslk luu tru file trong 1 thu muc D>Document
 //tren pc. cac file dc sx theo trat tu thoi gian.
 
+//tren lop:
+//Thiết kế giải thuật để sắp xếp các file trong thư mục lưu trữ theo thức tự tăng dần về dung lượng .
+
 //1. khai bao cau truc dslk
 struct FileNode{
     int size;               //kich thuoc file
@@ -19,6 +22,30 @@ struct FileList{
 void initFileList(FileList *list){
     list->head=nullptr;
     list->tail=nullptr;
+}
+
+FileNode* insertionSort(FileNode *head){
+    if(!head||!head->link)  return head;    //ktra dsach trong hoac co 1ptu
+    FileNode *sorted=nullptr;
+    FileNode *current=head;
+    while (current)
+    {
+        FileNode *nextnode=current->link;
+        if(sorted||current->size < sorted->size){      //chèn node vào sorted (t/h chen vao dau)
+            current->link=sorted;                      //noi current voi ptu da sx
+            sorted=current;                            //set lai con tro sorted(luon o vtri dau)       vd 123465
+        }else{                  //truong hop tren vao giua hoac cuoi
+            FileNode *temp = sorted;
+            while (temp->link && temp->link->size < current->size){
+                temp=temp->link;
+            }
+            current->link=temp->link;
+            temp->link=current;     //chen current ngay sau temp
+        }
+        current=nextnode;
+        return sorted;
+    }
+    
 }
 //2. copy paste file tu muc nay sang thu muc tren scho sx theo time
 
@@ -52,6 +79,7 @@ void addFile(FileList *l, FileNode *T){
 //3. tinh toan kich thuoc cac file trong thu muc
 int totalSize(FileList *l){
     FileNode *p= l->head;
+    if(!p)  return;
     int sum=0;
     while(p->link){
         sum+=p->size;
@@ -65,6 +93,7 @@ void deleteFile(FileList *l,long sizeMax=32*1024*1024*1024){
     while(totalSize(l)>sizeMax){
         FileNode *FileMin=l->head;
         FileNode *p=l->head;
+        if(!p)  return;
         FileNode *prevmin=nullptr;      //node truoc node co kich thuoc nho nhat
         FileNode *prevp=nullptr;
         //tim size nho nhat
