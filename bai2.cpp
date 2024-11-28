@@ -48,7 +48,7 @@ string findword(WordList *l){
 void BoLay(WordList *l){
     WordNode *p=l->head;    // q la con tro dang sau p
     WordNode *q=nullptr;    //neu de q chay trc p, q chay -> p khong chay => de sau
-    while(p->next){
+    while(p){
         if(p->tu==q->tu){
             WordNode *del=p;
             q->next=p->next;
@@ -64,7 +64,7 @@ void BoLay(WordList *l){
 int countWord(WordList *l){
     int count = 0;
     WordNode *p=l->head;
-    while(p->next){
+    while(p){
         count++;
         p=p->next;
     }

@@ -66,7 +66,7 @@ void addFile(FileList *l, FileNode *T){
         T->link=l->head;
         l->head=T;
     }else{
-        while(p->link){
+        while(p){
             if(T->timestamp>=p->timestamp){
                 T->link=p->link;
                 p->link=T;
@@ -81,7 +81,7 @@ int totalSize(FileList *l){
     FileNode *p= l->head;
     if(!p)  return;
     int sum=0;
-    while(p->link){
+    while(p){
         sum+=p->size;
         p=p->link;
     }
